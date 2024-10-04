@@ -1,4 +1,4 @@
-const Pricing = require('../models/Price');
+const Pricing = require('../Models/Price');
 
 // Create Pricing
 const createPricing = async (req, res) => {

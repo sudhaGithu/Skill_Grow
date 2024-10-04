@@ -1,4 +1,4 @@
-const SkillLevel = require('../models/SkillLevel');
+const SkillLevel = require('../Models/SkillLevel');
 
 // Create Skill Level
 const createSkillLevel = async (req, res) => {

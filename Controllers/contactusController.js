@@ -1,4 +1,4 @@
-const Contact = require('../models/contactUs');
+const Contact = require('../Models/contactUs');
 const transporter = require('../Middlewares/nodemailer'); 
 
 const createContact = async (req, res) => {

@@ -1,4 +1,4 @@
-const Category = require('../models/Category');
+const Category = require('../Models/Category');
 
 // Create a new Category
 const createCategory = async (req, res) => {
@@ -78,7 +78,7 @@ const deleteCategory = async (req, res) => {
     const { id } = req.params;
 
     // Check if any subcategories are linked to this category
-    const Subcategory = require('../models/SubCategory');
+    const Subcategory = require('../Models/SubCategoryModel');
     const linkedSubcategories = await Subcategory.findOne({ category: id });
     if (linkedSubcategories) {
       return res.status(400).json({ message: 'Cannot delete category with linked subcategories' });

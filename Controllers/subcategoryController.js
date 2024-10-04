@@ -1,5 +1,5 @@
-const Subcategory = require('../models/SubCategory');
-const Category = require('../models/Category');
+const Subcategory = require('../Models/SubCategoryModel')
+const Category = require('../Models/Category');
 
 // Create SubCategory
 const createSubcategory = async (req, res) => {
