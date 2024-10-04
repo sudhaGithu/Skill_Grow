@@ -10,10 +10,10 @@ const setupInitialData = require('./Middlewares/staticData');
 const roleRoutes = require('./Routes/roleRoute')
 const adminRoutes = require('./Routes/adminRoutes')
 
-const categoryRoutes = require('./routes/categoryRoutes');
-const languageRoutes = require('./routes/languageRoutes');
-const priceRoutes = require('./routes/priceRoutes');
-const skillLevelRoutes = require('./routes/skillLevelRoutes');
+const categoryRoutes = require('./Routes/categoryRoutes');
+const languageRoutes = require('./Routes/languageRoutes');
+const priceRoutes = require('./Routes/priceRoutes');
+const skillLevelRoutes = require('./Routes/skillLevelRoutes');
 
 
 //sudha controllers
