@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const roleController = require('../controllers/RolesControllers/roleController');
-const moduleController = require('../controllers/RolesControllers/masterModuleController')
-const masterpermissionController = require('../controllers/RolesControllers/masterPermissionsController')
+const roleController = require('../Controllers/RolesControllers/roleController');
+const moduleController = require('../Controllers/RolesControllers/masterModuleController')
+const masterpermissionController = require('../Controllers/RolesControllers/masterPermissionsController')
 const assignedpermissionsController = require('../Controllers/RolesControllers/assignedPermissionsController') 
-const permissionController = require('../controllers/RolesControllers/permissionController')
+const permissionController = require('../Controllers/RolesControllers/permissionController')
 //const authentication = require('../middlewares/authenticate')
 
 
