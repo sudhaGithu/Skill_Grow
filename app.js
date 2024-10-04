@@ -6,7 +6,7 @@ const app = express();
 const mongoose = require('mongoose');
 //const port = process.env.PORT
 
-const setupInitialData = require('./middlewares/staticData');
+const setupInitialData = require('./Middlewares/staticData');
 const roleRoutes = require('./Routes/roleRoute')
 const adminRoutes = require('./Routes/adminRoutes')
 
