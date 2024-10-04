@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const languageController = require('../controllers/languageController');
+const languageController = require('../Controllers/languageController');
 
 // Language Routes
 router.post('/createLanguage', languageController.createLanguage);

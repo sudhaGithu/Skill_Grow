@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const priceController = require('../controllers/priceController');
+const priceController = require('../Controllers/priceController');
 
 // Price Routes
 router.post('/createPrice', priceController.createPricing);

@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const categoryController = require('../controllers/categoryController');
-const subcategoryController = require ('../controllers/subcategoryController');
-const contactusController = require('../controllers/contactusController');
+const categoryController = require('../Controllers/categoryController');
+const subcategoryController = require ('../Controllers/subcategoryController');
+const contactusController = require('../Controllers/contactusController');
 
 
 // Category routes

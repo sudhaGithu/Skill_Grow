@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const skillLevelController = require('../controllers/skillLevelController');
+const skillLevelController = require('../Controllers/skillLevelController');
 
 // Skill Level Routes
 router.post('/createSkillLevel', skillLevelController.createSkillLevel);
