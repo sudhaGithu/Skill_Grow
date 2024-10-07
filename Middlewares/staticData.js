@@ -16,12 +16,12 @@ async function setupInitialData() {
   }
 
   // Check if the SuperAdmin user exists
-  let superAdmin = await Admin.findOne({ email: 'heshvithatech@gmail.com' });
+  let superAdmin = await Admin.findOne({ email: 'heshviithatech@gmail.com' });
   if (!superAdmin) {
     const hashedPassword = await bcrypt.hash('1234', 10);
     superAdmin = new Admin({
       fullName: 'heshvithatech',
-      email: 'heshvithatech@gmail.com',
+      email: 'heshviithatech@gmail.com',
       password: hashedPassword,
       phoneNumber: '1234567890',
       role: superAdminRole._id,

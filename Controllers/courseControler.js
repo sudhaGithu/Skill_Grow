@@ -14,21 +14,50 @@ const createCourse = async (req, res) => {
 };
 
 // Get all courses
+// const getCourses = async (req, res) => {
+//     try {
+//         const courses = await Course.find({ deleted: false })
+//             .populate('categoryId')          // Populate the category
+//             .populate('subcategoryId')       // Populate the subcategory
+//             .populate('price')       
+//             .populate('instructorId')        // Populate instructors
+//             .populate('languageId')          // Populate the language
+//             .populate('skillLevelId');       // Populate the skill level
+
+//             console.log(courses);
+            
+//         res.status(200).json(courses);
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
+
 const getCourses = async (req, res) => {
     try {
         const courses = await Course.find({ deleted: false })
             .populate('categoryId')          // Populate the category
             .populate('subcategoryId')       // Populate the subcategory
-            .populate('price')       
+            .populate('price')               // Populate the price
             .populate('instructorId')        // Populate instructors
             .populate('languageId')          // Populate the language
             .populate('skillLevelId');       // Populate the skill level
 
-        res.status(200).json(courses);
+        // Transform the data to include only the required fields
+        const transformedCourses = courses.map(course => ({
+            courseId: course._id,
+            baseVideo: course.baseVideo,
+            categoryName: course.categoryId?.name,
+            subcategoryName: course.subcategoryId?.name,
+            instructorName: course.instructorId[0]?.fullName, // Get the first instructor's name
+            priceAmount: course.price?.amount
+        }));
+
+        res.status(200).json(transformedCourses);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Read a course by ID
 const getCourse = async (req, res) => {
@@ -49,79 +78,81 @@ const getCourse = async (req, res) => {
 };
 
 
-// Get courses by category
-const getCoursesByCategory = async (req, res) => {
-    const { categoryId } = req.params; // Assuming categoryId is passed as a URL parameter
+// Get courses based on multiple optional filters
+// const getCoursesfilter = async (req, res) => {
+//     const { categoryId, subcategoryId, skillLevelId, languageId } = req.query; // Use query parameters
 
-    try {
-        const courses = await Course.find({ categoryId, deleted: false })
-            .populate('categoryId')
-            .populate('subcategoryId')
-            .populate('instructorId')
-            .populate('languageId')
-            .populate('skillLevelId');
+//     // Build the query object
+//     const query = { deleted: false };
 
-        res.json(courses);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+//     if (categoryId) {
+//         query.categoryId = categoryId;
+//     }
+//     if (subcategoryId) {
+//         query.subcategoryId = subcategoryId;
+//     }
+//     if (skillLevelId) {
+//         query.skillLevelId = skillLevelId;
+//     }
+//     if (languageId) {
+//         query.languageId = languageId;
+//     }
+
+//     try {
+//         const courses = await Course.find(query)
+//             .populate('categoryId')
+//             .populate('subcategoryId')
+//             .populate('instructorId')
+//             .populate('languageId')
+//             .populate('skillLevelId');
+
+//         res.json(courses);
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// };
+
+// Make sure to update your routes to use this new API endpoint
+
+const getCoursesfilter = async (req, res) => {
+    const { categoryId, subcategoryId, skillLevelId, languageId } = req.query; // Use query parameters
+
+    // Build the query object
+    const query = { deleted: false };
+
+    if (categoryId) {
+        query.categoryId = categoryId;
     }
-};
-
-
-// Get courses by category and subcategory
-const getCoursesByCategoryAndSubcategory = async (req, res) => {
-    const { categoryId, subcategoryId } = req.params; // Assuming both IDs are passed as URL parameters
-
-    try {
-        const courses = await Course.find({ 
-                categoryId, 
-                subcategoryId, 
-                deleted: false 
-            })
-            .populate('categoryId')
-            .populate('subcategoryId')
-            .populate('instructorId')
-            .populate('languageId')
-            .populate('skillLevelId');
-
-        res.json(courses);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (subcategoryId) {
+        query.subcategoryId = subcategoryId;
     }
-};
-
-// Get courses by skill level
-const getCoursesBySkillLevel = async (req, res) => {
-    const { skillLevelId } = req.params; // Assuming skillLevelId is passed as a URL parameter
-
-    try {
-        const courses = await Course.find({ skillLevelId, deleted: false })
-            .populate('categoryId')
-            .populate('subcategoryId')
-            .populate('instructorId')
-            .populate('languageId')
-            .populate('skillLevelId');
-
-        res.json(courses);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (skillLevelId) {
+        query.skillLevelId = skillLevelId;
     }
-};
-
-
-// Get courses by language
-const getCoursesByLanguage = async (req, res) => {
-    const { languageId } = req.params; // Assuming languageId is passed as a URL parameter
+    if (languageId) {
+        query.languageId = languageId;
+    }
 
     try {
-        const courses = await Course.find({ languageId, deleted: false })
+        const courses = await Course.find(query)
             .populate('categoryId')
             .populate('subcategoryId')
+            .populate('price')
             .populate('instructorId')
             .populate('languageId')
             .populate('skillLevelId');
 
-        res.json(courses);
+        // Transform the data to include only the required fields
+        const transformedCourses = courses.map(course => ({
+            courseId: course._id,
+            baseVideo: course.baseVideo,
+            categoryName: course.categoryId?.name,
+            subcategoryName: course.subcategoryId?.name,
+            instructorName: course.instructorId[0]?.fullName, // Get the first instructor's name
+            priceAmount: course.price?.amount
+        }));
+
+        res.status(200).json(transformedCourses);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -166,10 +197,7 @@ module.exports = {
     createCourse,
     getCourses,
     getCourse,
-    getCoursesByCategory,
-    getCoursesByCategoryAndSubcategory,
-    getCoursesByLanguage,
-    getCoursesBySkillLevel,
+    getCoursesfilter,
     updateCourse,
     deleteCourse
 };

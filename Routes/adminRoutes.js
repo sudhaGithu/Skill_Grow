@@ -32,11 +32,8 @@ router.get('/users/instructor/getall',userController.getInstructors)
 // Routes for course
 router.post('/course/create', courseController.createCourse);
 router.get('/course/getall', courseController.getCourses);
-router.get('/course/get/:id', courseController.getCourse);
-router.get('/course/get/category/:categoryId', courseController.getCoursesByCategory);
-router.get('/course/get/category/:categoryId/subcategory/:subcategoryId', courseController.getCoursesByCategoryAndSubcategory);
-router.get('/course/get/skill/:skillLevelId', courseController.getCoursesBySkillLevel);
-router.get('/course/get/language/:languageId', courseController.getCoursesByLanguage);
+router.get('/course/get/:id', courseController.getCourse)
+router.get('/course/filter/get', courseController.getCoursesfilter);
 router.put('/course/update/:id', courseController.updateCourse);
 router.delete('/course/delete/:id', courseController.deleteCourse);
 
