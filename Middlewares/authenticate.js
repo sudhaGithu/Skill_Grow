@@ -1,6 +1,6 @@
 // middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
-const Admin = require('../models/adminModel'); // Adjust the path as needed
+const Admin = require('../Models/userModel'); // Adjust the path as needed
 //const superAdmin = require('../models/SuperAdminModle');
 
 const adminauthenticate = async (req, res, next) => {

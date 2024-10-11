@@ -8,6 +8,8 @@ const userController = require('../Controllers/userController')
 const courseController = require('../Controllers/courseControler');
 const termsAndConditionsController = require('../Controllers/termsAndConditionsController');
 const privacypolicyController = require('../Controllers/privacyPolicyController');
+const reviewController = require('../Controllers/reviewController');
+const authMiddleware = require('../Middlewares/authenticate'); // Ensure you have an auth middleware to fetch user from token
 // const purchaseController = require('../controllers/purchaseControllerr');
 // const itemController = require('../controllers/itemController');
 // const CenterController = require('../Controllers/centerController')
@@ -53,31 +55,14 @@ router.delete('/privacypolicy/delete/:id', privacypolicyController.deletePrivacy
 
 
 
-// // Routes purchase
-// router.post('/recordPurchase', purchaseController.addPurchase);
-// router.get('/getAllPurchases', purchaseController.getAllPurchases);
-// router.get('/getPurchaseById/:id', purchaseController.getPurchaseById);
-// router.put('/updatePurchaseById/:id', purchaseController.updatePurchaseById);
-// router.delete('/deletePurchaseById/:id', purchaseController.deletePurchaseById);
 
-// //Routes for items
-// router.post('/items/add', itemController.addItem);
-// router.get('/items/getall', itemController.getItems);
+// Routes for review
+router.post('/reviews/:courseId', authMiddleware.adminauthenticate,reviewController.createReview);
+router.put('/reviews/:courseId/:reviewId', authMiddleware.adminauthenticate, reviewController.createReview);
+router.get('/reviews/:courseId', reviewController.getReviews);
+router.delete('/reviews/:courseId/:reviewId', authMiddleware.adminauthenticate, reviewController.deleteReview);
 
 
-// // Routes for Center
-// router.post('/center/add', CenterController.addCenter);
-// router.get('/center/getall', CenterController.getCenters);
-// router.get('/center/get/:id', CenterController.getCenter);
-// router.put('/center/update/:id', CenterController.updateCenter);
-// router.delete('/center/delete/:id', CenterController.deleteCenter);
-
-
-// // routes for sales 
-// router.post('/sales/add', salesController.addSale);
-// router.get('/sales/getall', salesController.getSale);
-// router.get('/sales/get/:id', salesController.getSales);
-// router.get('/sales/get/:centerId', salesController.getSaleBasedOnCenter);
 
 
 module.exports = router

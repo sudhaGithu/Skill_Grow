@@ -37,7 +37,11 @@ const reviewSchema = new mongoose.Schema({
 });
 
 const courseSchema = new mongoose.Schema({
-  baseVideo: {
+  
+  thumbnailImage: { // New field for thumbnail image
+    type: String,
+    required: false,
+  },baseVideo: {
     type: String,
     required: false,
   },
@@ -89,6 +93,10 @@ const courseSchema = new mongoose.Schema({
     ref: 'SkillLevel', // Reference to the SkillLevel model
     required: true,
   },
+  rating: {
+    type: Number,
+    default: 5,
+},
   deleted: {
     type: Boolean,
     default: false,

@@ -45,11 +45,12 @@ const getCourses = async (req, res) => {
         // Transform the data to include only the required fields
         const transformedCourses = courses.map(course => ({
             courseId: course._id,
-            baseVideo: course.baseVideo,
+            thumbnailImage: course.thumbnailImage,
             categoryName: course.categoryId?.name,
             subcategoryName: course.subcategoryId?.name,
             instructorName: course.instructorId[0]?.fullName, // Get the first instructor's name
-            priceAmount: course.price?.amount
+            priceAmount: course.price?.amount,
+            rating : course.rating
         }));
 
         res.status(200).json(transformedCourses);
@@ -145,11 +146,12 @@ const getCoursesfilter = async (req, res) => {
         // Transform the data to include only the required fields
         const transformedCourses = courses.map(course => ({
             courseId: course._id,
-            baseVideo: course.baseVideo,
+            thumbnailImage: course.thumbnailImage,
             categoryName: course.categoryId?.name,
             subcategoryName: course.subcategoryId?.name,
             instructorName: course.instructorId[0]?.fullName, // Get the first instructor's name
-            priceAmount: course.price?.amount
+            priceAmount: course.price?.amount,
+            rating : course.rating
         }));
 
         res.status(200).json(transformedCourses);
