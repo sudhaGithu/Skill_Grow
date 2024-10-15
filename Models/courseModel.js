@@ -60,9 +60,13 @@ const courseSchema = new mongoose.Schema({
     required: true,
   },
   price: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Price', // Reference to the User model (for multiple instructors)
+    type: Number,
     required: true,
+  },
+  priceType:{
+    type : String,
+    enum: ['Free', 'Paid'],
+    
   },
   instructorId: [{
     type: mongoose.Schema.Types.ObjectId,

@@ -1,13 +1,20 @@
-const Role = require('../../Models/Roles/roleModel')
+const Role = require('../../Models/Roles/roleModel');
 
 // Create a new role
 const addRole = async (req, res) => {
     try {
         const role = new Role(req.body);
         await role.save();
-        res.status(201).send(role);
+        res.status(201).json({
+            status: true,
+            message: 'Role created successfully',
+            data: role
+        });
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).json({
+            status: false,
+            message: error.message
+        });
     }
 };
 
@@ -15,9 +22,16 @@ const addRole = async (req, res) => {
 const getAllRole = async (req, res) => {
     try {
         const roles = await Role.find({ deletedAt: null });
-        res.status(200).send(roles);
+        res.status(200).json({
+            status: true,
+            message: 'Roles retrieved successfully',
+            data: roles
+        });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({
+            status: false,
+            message: error.message
+        });
     }
 };
 
@@ -26,11 +40,21 @@ const getRole = async (req, res) => {
     try {
         const role = await Role.findOne({ _id: req.params.id, deletedAt: null });
         if (!role) {
-            return res.status(404).send('Role not found');
+            return res.status(404).json({
+                status: false,
+                message: 'Role not found'
+            });
         }
-        res.status(200).send(role);
+        res.status(200).json({
+            status: true,
+            message: 'Role retrieved successfully',
+            data: role
+        });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({
+            status: false,
+            message: error.message
+        });
     }
 };
 
@@ -43,11 +67,21 @@ const updateRole = async (req, res) => {
             { new: true, runValidators: true }
         );
         if (!role) {
-            return res.status(404).send('Role not found');
+            return res.status(404).json({
+                status: false,
+                message: 'Role not found'
+            });
         }
-        res.status(200).send(role);
+        res.status(200).json({
+            status: true,
+            message: 'Role updated successfully',
+            data: role
+        });
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).json({
+            status: false,
+            message: error.message
+        });
     }
 };
 
@@ -60,11 +94,21 @@ const deleteRole = async (req, res) => {
             { new: true }
         );
         if (!role) {
-            return res.status(404).send('Role not found');
+            return res.status(404).json({
+                status: false,
+                message: 'Role not found'
+            });
         }
-        res.status(200).send(role);
+        res.status(200).json({
+            status: true,
+            message: 'Role deleted successfully',
+            data: role
+        });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({
+            status: false,
+            message: error.message
+        });
     }
 };
 
@@ -77,11 +121,21 @@ const restoreRole = async (req, res) => {
             { new: true }
         );
         if (!role) {
-            return res.status(404).send('Role not found');
+            return res.status(404).json({
+                status: false,
+                message: 'Role not found'
+            });
         }
-        res.status(200).send(role);
+        res.status(200).json({
+            status: true,
+            message: 'Role restored successfully',
+            data: role
+        });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({
+            status: false,
+            message: error.message
+        });
     }
 };
 
@@ -92,4 +146,4 @@ module.exports = {
     updateRole,
     deleteRole,
     restoreRole
-}
+};

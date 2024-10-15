@@ -1,14 +1,13 @@
-const MasterModule = require('../../Models/Roles/masterModuleModel')
-
+const MasterModule = require('../../Models/Roles/masterModuleModel');
 
 // Create a new master module
-const addmasterModule =  async (req, res) => {
+const addmasterModule = async (req, res) => {
     try {
         const masterModule = new MasterModule(req.body);
         await masterModule.save();
-        res.status(201).send(masterModule);
+        res.status(201).json({ status: true, data: masterModule });
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).json({ status: false, message: error.message });
     }
 };
 
@@ -16,9 +15,9 @@ const addmasterModule =  async (req, res) => {
 const getallmasterModule = async (req, res) => {
     try {
         const masterModules = await MasterModule.find({ deletedAt: null });
-        res.status(200).send(masterModules);
+        res.status(200).json({ status: true, data: masterModules });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -27,11 +26,11 @@ const getmasterModule = async (req, res) => {
     try {
         const masterModule = await MasterModule.findOne({ _id: req.params.id, deletedAt: null });
         if (!masterModule) {
-            return res.status(404).send('MasterModule not found');
+            return res.status(404).json({ status: false, message: 'MasterModule not found' });
         }
-        res.status(200).send(masterModule);
+        res.status(200).json({ status: true, data: masterModule });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -44,11 +43,11 @@ const updatemasterModule = async (req, res) => {
             { new: true, runValidators: true }
         );
         if (!masterModule) {
-            return res.status(404).send('MasterModule not found');
+            return res.status(404).json({ status: false, message: 'MasterModule not found' });
         }
-        res.status(200).send(masterModule);
+        res.status(200).json({ status: true, data: masterModule });
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).json({ status: false, message: error.message });
     }
 };
 
@@ -61,11 +60,11 @@ const deletemasterModule = async (req, res) => {
             { new: true }
         );
         if (!masterModule) {
-            return res.status(404).send('MasterModule not found');
+            return res.status(404).json({ status: false, message: 'MasterModule not found' });
         }
-        res.status(200).send(masterModule);
+        res.status(200).json({ status: true, data: masterModule });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -78,11 +77,11 @@ const restoremasterModule = async (req, res) => {
             { new: true }
         );
         if (!masterModule) {
-            return res.status(404).send('MasterModule not found');
+            return res.status(404).json({ status: false, message: 'MasterModule not found' });
         }
-        res.status(200).send(masterModule);
+        res.status(200).json({ status: true, data: masterModule });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -93,4 +92,4 @@ module.exports = {
     updatemasterModule,
     deletemasterModule,
     restoremasterModule
-}
+};

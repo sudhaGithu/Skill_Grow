@@ -1,4 +1,3 @@
-// routes/termsAndConditions.js
 const express = require('express');
 const TermsAndConditions = require('../Models/termsAndConditions');
 const router = express.Router();
@@ -7,9 +6,9 @@ const router = express.Router();
 const createTermsAndConditions = async (req, res) => {
     try {
         const terms = await TermsAndConditions.create(req.body);
-        res.status(201).json(terms);
+        res.status(201).json({ status: true, message: 'Terms and Conditions created successfully', data: terms });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ status: false, message: 'Error creating Terms and Conditions', error: error.message });
     }
 };
 
@@ -17,9 +16,9 @@ const createTermsAndConditions = async (req, res) => {
 const getTermsAndConditions = async (req, res) => {
     try {
         const terms = await TermsAndConditions.find({ deleted: false });
-        res.json(terms);
+        res.status(200).json({ status: true, data: terms });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ status: false, message: 'Error fetching Terms and Conditions', error: error.message });
     }
 };
 
@@ -27,10 +26,10 @@ const getTermsAndConditions = async (req, res) => {
 const getTermsAndCondition = async (req, res) => {
     try {
         const terms = await TermsAndConditions.findOne({ _id: req.params.id, deleted: false });
-        if (!terms) return res.status(404).json({ message: 'Terms and Conditions not found' });
-        res.json(terms);
+        if (!terms) return res.status(404).json({ status: false, message: 'Terms and Conditions not found' });
+        res.status(200).json({ status: true, data: terms });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ status: false, message: 'Error fetching Terms and Conditions', error: error.message });
     }
 };
 
@@ -43,12 +42,11 @@ const updateTermsAndConditions = async (req, res) => {
             { new: true } // This option returns the updated document
         );
 
-        if (!terms) return res.status(404).json({ message: 'Terms and Conditions not found' });
+        if (!terms) return res.status(404).json({ status: false, message: 'Terms and Conditions not found' });
 
-        res.status(200).json({ message : "updated successfully",
-            updatedData : terms}); // This will now return the updated document
+        res.status(200).json({ status: true, message: 'Terms and Conditions updated successfully', data: terms });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ status: false, message: 'Error updating Terms and Conditions', error: error.message });
     }
 };
 
@@ -56,15 +54,13 @@ const updateTermsAndConditions = async (req, res) => {
 const deleteTermsAndConditions = async (req, res) => {
     try {
         const terms = await TermsAndConditions.findById(req.params.id);
-        console.log(terms);
-        
-        if (!terms) return res.status(404).json({ message: 'Terms and Conditions not found' });
+        if (!terms) return res.status(404).json({ status: false, message: 'Terms and Conditions not found' });
 
         terms.deleted = true;
         await terms.save();
-        res.status(200).json({message : "terms and conditions deleted successfully"});
+        res.status(200).json({ status: true, message: 'Terms and Conditions deleted successfully' });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ status: false, message: 'Error deleting Terms and Conditions', error: error.message });
     }
 };
 

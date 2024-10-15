@@ -20,7 +20,7 @@ const authMiddleware = require('../Middlewares/authenticate'); // Ensure you hav
 
 // User routes
 router.post('/users/create',upload.fields([{ name: 'image', maxCount: 1 }, { name: 'idProof', maxCount: 1 }]), userController.createUser)
-router.get('/users/getall',userController.getallUsers)
+router.get('/users/getall',userController.getAllUsers)
 router.get('/users/get/:id', userController.getUserById)
 router.put('/users/status/:id', userController.userStatus)
 router.put('/users/delete/:id', userController.deleteUserById)

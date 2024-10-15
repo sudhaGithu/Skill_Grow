@@ -1,46 +1,48 @@
-const MasterPermissions = require('../../Models/Roles/modulePermissions')
-const MasterModule = require('../../Models/Roles/masterModuleModel')
-
+const MasterPermissions = require('../../Models/Roles/modulePermissions');
+const MasterModule = require('../../Models/Roles/masterModuleModel');
 
 // Create a new master permission
 const addPermission = async (req, res) => {
     try {
         const { moduleId, permissions } = req.body;
-        
+
         // Check if the moduleId exists in MasterModule
         const module = await MasterModule.findById(moduleId);
         if (!module) {
-            return res.status(404).send('Module not found');
+            return res.status(404).json({ status: false, message: 'Module not found' });
         }
 
         const masterPermission = new MasterPermissions({ moduleId, permissions });
         await masterPermission.save();
-        res.status(201).json(masterPermission);
+        res.status(201).json({ status: true, data: masterPermission });
     } catch (error) {
-        res.status(400).json({message : error.message});
+        res.status(400).json({ status: false, message: error.message });
     }
 };
 
 // Get all master permissions (excluding soft-deleted ones)
 const getAllPermission = async (req, res) => {
     try {
-        const masterPermissions = await MasterPermissions.find({ deletedAt: null }).populate('moduleId').populate('permissions');
-        res.status(200).send(masterPermissions);
+        const masterPermissions = await MasterPermissions.find({ deletedAt: null })
+            .populate('moduleId')
+            .populate('permissions');
+        res.status(200).json({ status: true, data: masterPermissions });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({ status: false, message: error.message });
     }
 };
 
 // Get a single master permission by ID (excluding soft-deleted ones)
 const getPermission = async (req, res) => {
     try {
-        const masterPermission = await MasterPermissions.findOne({ _id: req.params.id, deletedAt: null }).populate('moduleId');
+        const masterPermission = await MasterPermissions.findOne({ _id: req.params.id, deletedAt: null })
+            .populate('moduleId');
         if (!masterPermission) {
-            return res.status(404).send('MasterPermission not found');
+            return res.status(404).json({ status: false, message: 'MasterPermission not found' });
         }
-        res.status(200).send(masterPermission);
+        res.status(200).json({ status: true, data: masterPermission });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -48,11 +50,11 @@ const getPermission = async (req, res) => {
 const updatePermission = async (req, res) => {
     try {
         const { moduleId, permissionName } = req.body;
-        
+
         // Check if the moduleId exists in MasterModule
         const module = await MasterModule.findById(moduleId);
         if (!module) {
-            return res.status(404).send('Module not found');
+            return res.status(404).json({ status: false, message: 'Module not found' });
         }
 
         const masterPermission = await MasterPermissions.findOneAndUpdate(
@@ -60,12 +62,13 @@ const updatePermission = async (req, res) => {
             { moduleId, permissionName },
             { new: true, runValidators: true }
         ).populate('moduleId');
+        
         if (!masterPermission) {
-            return res.status(404).send('MasterPermission not found');
+            return res.status(404).json({ status: false, message: 'MasterPermission not found' });
         }
-        res.status(200).send(masterPermission);
+        res.status(200).json({ status: true, data: masterPermission });
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).json({ status: false, message: error.message });
     }
 };
 
@@ -77,12 +80,13 @@ const deletePermission = async (req, res) => {
             { deletedAt: new Date() },
             { new: true }
         ).populate('moduleId');
+        
         if (!masterPermission) {
-            return res.status(404).send('MasterPermission not found');
+            return res.status(404).json({ status: false, message: 'MasterPermission not found' });
         }
-        res.status(200).send(masterPermission);
+        res.status(200).json({ status: true, data: masterPermission });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -94,12 +98,13 @@ const restorePermission = async (req, res) => {
             { deletedAt: null },
             { new: true }
         ).populate('moduleId');
+
         if (!masterPermission) {
-            return res.status(404).send('MasterPermission not found');
+            return res.status(404).json({ status: false, message: 'MasterPermission not found' });
         }
-        res.status(200).send(masterPermission);
+        res.status(200).json({ status: true, data: masterPermission });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -110,4 +115,4 @@ module.exports = {
     updatePermission,
     deletePermission,
     restorePermission
-}
+};

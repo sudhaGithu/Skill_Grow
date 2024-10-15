@@ -1,6 +1,4 @@
-// controllers/reviewController.js
 const Course = require('../Models/courseModel'); // Adjust the path as necessary
-const mongoose = require('mongoose');
 
 // Create a new review
 const createReview = async (req, res) => {
@@ -11,13 +9,14 @@ const createReview = async (req, res) => {
     try {
         const course = await Course.findById(courseId);
         if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
+            return res.status(404).json({ status: false, message: 'Course not found' });
         }
 
         const newReview = {
             user: userId,
             rating,
-            review
+            review,
+            deleted: false // Ensure soft delete status is set
         };
 
         // Add the review to the course
@@ -29,9 +28,9 @@ const createReview = async (req, res) => {
 
         await course.save();
 
-        return res.status(201).json(course);
+        return res.status(201).json({ status: true, message: 'Review created successfully', data: course });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -43,12 +42,12 @@ const updateReview = async (req, res) => {
     try {
         const course = await Course.findById(courseId);
         if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
+            return res.status(404).json({ status: false, message: 'Course not found' });
         }
 
         const existingReview = course.reviews.id(reviewId);
         if (!existingReview || existingReview.user.toString() !== req.user.id) {
-            return res.status(403).json({ message: 'Not authorized to update this review' });
+            return res.status(403).json({ status: false, message: 'Not authorized to update this review' });
         }
 
         existingReview.rating = rating;
@@ -60,9 +59,9 @@ const updateReview = async (req, res) => {
 
         await course.save();
 
-        return res.status(200).json(course);
+        return res.status(200).json({ status: true, message: 'Review updated successfully', data: course });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -73,12 +72,13 @@ const getReviews = async (req, res) => {
     try {
         const course = await Course.findById(courseId).populate('reviews.user', 'username'); // Adjust based on your User model
         if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
+            return res.status(404).json({ status: false, message: 'Course not found' });
         }
 
-        return res.status(200).json(course.reviews);
+        const reviews = course.reviews.filter(review => !review.deleted); // Exclude soft-deleted reviews
+        return res.status(200).json({ status: true, data: reviews });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -89,20 +89,20 @@ const deleteReview = async (req, res) => {
     try {
         const course = await Course.findById(courseId);
         if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
+            return res.status(404).json({ status: false, message: 'Course not found' });
         }
 
         const existingReview = course.reviews.id(reviewId);
         if (!existingReview || existingReview.user.toString() !== req.user.id) {
-            return res.status(403).json({ message: 'Not authorized to delete this review' });
+            return res.status(403).json({ status: false, message: 'Not authorized to delete this review' });
         }
 
         existingReview.deleted = true; // Soft delete
         await course.save();
 
-        return res.status(200).json({ message: 'Review deleted successfully' });
+        return res.status(200).json({ status: true, message: 'Review deleted successfully' });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ status: false, message: error.message });
     }
 };
 
@@ -111,4 +111,4 @@ module.exports = {
     getReviews,
     updateReview,
     deleteReview
-}
+};
