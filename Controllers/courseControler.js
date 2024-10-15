@@ -3,6 +3,12 @@ const express = require('express');
 const Course = require('../Models/courseModel');
 const router = express.Router();
 
+const Category = require('../Models/Category');
+const SubCategory = require('../Models/SubCategoryModel');
+const SkillLevel = require('../Models/SkillLevel');
+const Language = require('../Models/Language');
+const Price = require('../Models/Price');
+
 // Create a new course
 const createCourse = async (req, res) => {
     try {
@@ -116,7 +122,7 @@ const getCourse = async (req, res) => {
 // Make sure to update your routes to use this new API endpoint
 
 const getCoursesfilter = async (req, res) => {
-    const { categoryId, subcategoryId, skillLevelId, languageId } = req.query; // Use query parameters
+    const { categoryId, subcategoryId, skillLevelId, languageId, price } = req.query; // Use query parameters
 
     // Build the query object
     const query = { deleted: false };
@@ -132,6 +138,9 @@ const getCoursesfilter = async (req, res) => {
     }
     if (languageId) {
         query.languageId = languageId;
+    }
+    if (price) {
+        query.price = price;
     }
 
     try {
@@ -195,10 +204,37 @@ const deleteCourse = async (req, res) => {
     }
 };
 
+
+
+
+const getFilterData = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    const subCategories = await SubCategory.find();
+    const skillLevels = await SkillLevel.find();
+    const languages = await Language.find();
+    const prices = await Price.find();
+
+    res.json({
+      status: true,
+      data: {
+        category: categories,
+        subCategories: subCategories,
+        skillLevels: skillLevels,
+        languages: languages,
+        price: prices,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, message: error.message });
+  }
+};
+
 module.exports = {
     createCourse,
     getCourses,
     getCourse,
+    getFilterData,
     getCoursesfilter,
     updateCourse,
     deleteCourse

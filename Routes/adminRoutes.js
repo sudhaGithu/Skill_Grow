@@ -38,6 +38,7 @@ router.get('/course/get/:id', courseController.getCourse)
 router.get('/course/filter/get', courseController.getCoursesfilter);
 router.put('/course/update/:id', courseController.updateCourse);
 router.delete('/course/delete/:id', courseController.deleteCourse);
+router.get('/course/getfilterdata', courseController.getFilterData);
 
 // Routes for terms and conditions
 router.post('/terms&conditions/add', termsAndConditionsController.createTermsAndConditions);
