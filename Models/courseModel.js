@@ -65,7 +65,7 @@ const courseSchema = new mongoose.Schema({
   },
   priceType:{
     type : String,
-    enum: ['Free', 'Paid'],
+    enum: ['Free', 'Paid']
     
   },
   instructorId: [{
@@ -100,6 +100,22 @@ const courseSchema = new mongoose.Schema({
   rating: {
     type: Number,
     default: 5,
+},
+duration: {
+  type : String,
+  require : true
+},
+lessons : {
+  type : Number,
+  required : true
+},
+quizzes : {
+  type : Number,
+  required : true
+},certifications : {
+  type : String,
+  enum: ['Yes', 'No'],
+  required : true
 },
   deleted: {
     type: Boolean,

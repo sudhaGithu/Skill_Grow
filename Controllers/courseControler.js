@@ -55,24 +55,35 @@ const getCourses = async (req, res) => {
     }
 };
 
-// Read a course by ID
+
 const getCourse = async (req, res) => {
     try {
         const course = await Course.findOne({ _id: req.params.id, deleted: false })
             .populate('categoryId')
             .populate('subcategoryId')
-            .populate('price')
-            .populate('instructorId')
             .populate('languageId')
-            .populate('skillLevelId');
+            .populate('skillLevelId')
+            .populate({
+                path: 'instructorId', // Populate instructors
+                populate: {
+                    path: 'role', // Populate role within instructors
+                    select: 'name' // Select only the name field from the role
+                }
+            })
+            .populate({
+                path: 'reviews.user', // Populate user in reviews
+                select: 'fullName email image' // Select fields to return from the user model
+            });;
 
         if (!course) return res.status(404).json({ status: false, message: 'Course not found' });
+
 
         res.status(200).json({ status: true, data: course });
     } catch (error) {
         res.status(500).json({ status: false, message: error.message });
     }
 };
+
 
 // Get courses based on multiple optional filters
 const getCoursesfilter = async (req, res) => {
