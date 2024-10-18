@@ -51,6 +51,25 @@ const getSubcategoryById = async (req, res) => {
     }
 };
 
+// Get all subcategories by categoryId
+const getSubcategoriesByCategorie = async (req, res) => {
+    const { categoryId } = req.params;
+
+    try {
+        const subCategories = await Subcategory.find({ categoryId });
+        
+        if (subCategories.length === 0) {
+            return res.status(404).json({ message: 'No subcategories found for this category.' });
+        }
+
+        res.status(200).json({ status : true,
+            data :subCategories});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status : false, message: error.message });
+    }
+};
+
 // Update Subcategory by ID
 const updateSubcategory = async (req, res) => {
     try {
@@ -100,6 +119,7 @@ module.exports = {
     createSubcategory,
     getAllSubcategories,
     getSubcategoryById,
+    getSubcategoriesByCategorie,
     updateSubcategory,
     deleteSubcategory
 };
